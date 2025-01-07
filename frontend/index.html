@@ -1,0 +1,21 @@
+<!doctype html>
+<html ng-app="myK8sApp">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="k8sApp.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h2>My K8s App</h2>
+
+    <div ng-controller="PingController as ping">
+        <form ng-submit="ping.makeRequest()">
+            <input class="btn-primary" type="submit" value="Ping">
+        </form>
+        <pre><code>{{ ping.response }}</code></pre>
+    </div>
+</body>
+
+</html>

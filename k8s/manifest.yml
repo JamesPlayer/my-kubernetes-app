@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-k8s-app-api
+  name: my-k8s-app-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-k8s-app-api
+  template:
+    metadata:
+      labels:
+        app: my-k8s-app-api
+    spec:
+      containers:
+      - image: jamesplayer/my-k8s-api
+        name: my-k8s-api
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+              
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-k8s-app-frontend
+  name: my-k8s-app-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-k8s-app-frontend
+  template:
+    metadata:
+      labels:
+        app: my-k8s-app-frontend
+    spec:
+      containers:
+      - image: jamesplayer/my-k8s-frontend
+        name: my-k8s-frontend
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-k8s-app-api
+  name: my-k8s-app-api
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: my-k8s-app-api
+  type: NodePort
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-k8s-app-frontend
+  name: my-k8s-app-frontend
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: my-k8s-app-frontend
+  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-k8s-app-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: my-k8s-app.example
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-k8s-app-frontend
+                port:
+                  number: 80
+          - path: /ping
+            pathType: Prefix
+            backend:
+              service:
+                name: my-k8s-app-api
+                port:
+                  number: 8080
