@@ -30,6 +30,12 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
+        - name: MY_SECRET
+          valueFrom:
+            secretKeyRef:
+              # Create first using `kubectl create secret generic my-k8s-app-secrets --from-literal=my-secret='SECRET_GOES_HERE'`
+              name: my-k8s-app-secrets
+              key: my-secret
               
 ---
 
