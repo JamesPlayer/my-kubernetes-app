@@ -14,9 +14,17 @@ spec:
       labels:
         app: my-k8s-app-api
     spec:
+      volumes:
+        - name: config
+          configMap:
+            name: my-k8s-app-config
       containers:
       - image: jamesplayer/my-k8s-api
         name: my-k8s-api
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/app-config"
+          readOnly: true
         env:
         - name: MY_NODE_NAME
           valueFrom:
