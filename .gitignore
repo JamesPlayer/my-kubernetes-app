@@ -1,3 +1,4 @@
 .DS_Store
 k8s/config.yml
 k8s/secrets.yml
+__debug_bin*
