@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.2
 // 	protoc        v5.29.3
-// source: ping-pong.proto
+// source: proto/ping-pong.proto
 
 package proto
 
@@ -22,14 +22,14 @@ const (
 
 type PingPongRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PingPongRequest) Reset() {
 	*x = PingPongRequest{}
-	mi := &file_ping_pong_proto_msgTypes[0]
+	mi := &file_proto_ping_pong_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -41,7 +41,7 @@ func (x *PingPongRequest) String() string {
 func (*PingPongRequest) ProtoMessage() {}
 
 func (x *PingPongRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ping_pong_proto_msgTypes[0]
+	mi := &file_proto_ping_pong_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -54,26 +54,27 @@ func (x *PingPongRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingPongRequest.ProtoReflect.Descriptor instead.
 func (*PingPongRequest) Descriptor() ([]byte, []int) {
-	return file_ping_pong_proto_rawDescGZIP(), []int{0}
+	return file_proto_ping_pong_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PingPongRequest) GetMessage() string {
+func (x *PingPongRequest) GetMsg() string {
 	if x != nil {
-		return x.Message
+		return x.Msg
 	}
 	return ""
 }
 
 type PingPongReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Msg           string                 `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	Env           map[string]string      `protobuf:"bytes,2,rep,name=env,proto3" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PingPongReply) Reset() {
 	*x = PingPongReply{}
-	mi := &file_ping_pong_proto_msgTypes[1]
+	mi := &file_proto_ping_pong_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -85,7 +86,7 @@ func (x *PingPongReply) String() string {
 func (*PingPongReply) ProtoMessage() {}
 
 func (x *PingPongReply) ProtoReflect() protoreflect.Message {
-	mi := &file_ping_pong_proto_msgTypes[1]
+	mi := &file_proto_ping_pong_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -98,26 +99,39 @@ func (x *PingPongReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingPongReply.ProtoReflect.Descriptor instead.
 func (*PingPongReply) Descriptor() ([]byte, []int) {
-	return file_ping_pong_proto_rawDescGZIP(), []int{1}
+	return file_proto_ping_pong_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PingPongReply) GetMessage() string {
+func (x *PingPongReply) GetMsg() string {
 	if x != nil {
-		return x.Message
+		return x.Msg
 	}
 	return ""
 }
 
-var File_ping_pong_proto protoreflect.FileDescriptor
+func (x *PingPongReply) GetEnv() map[string]string {
+	if x != nil {
+		return x.Env
+	}
+	return nil
+}
 
-var file_ping_pong_proto_rawDesc = []byte{
-	0x0a, 0x0f, 0x70, 0x69, 0x6e, 0x67, 0x2d, 0x70, 0x6f, 0x6e, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x2b, 0x0a, 0x0f, 0x50, 0x69, 0x6e, 0x67,
-	0x50, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x6d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x29, 0x0a, 0x0d, 0x50, 0x69, 0x6e, 0x67, 0x50, 0x6f, 0x6e,
-	0x67, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+var File_proto_ping_pong_proto protoreflect.FileDescriptor
+
+var file_proto_ping_pong_proto_rawDesc = []byte{
+	0x0a, 0x15, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x70, 0x69, 0x6e, 0x67, 0x2d, 0x70, 0x6f, 0x6e,
+	0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x23,
+	0x0a, 0x0f, 0x50, 0x69, 0x6e, 0x67, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
+	0x6d, 0x73, 0x67, 0x22, 0x8a, 0x01, 0x0a, 0x0d, 0x50, 0x69, 0x6e, 0x67, 0x50, 0x6f, 0x6e, 0x67,
+	0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x2f, 0x0a, 0x03, 0x65, 0x6e, 0x76, 0x18, 0x02,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e,
+	0x67, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x2e, 0x45, 0x6e, 0x76, 0x45, 0x6e,
+	0x74, 0x72, 0x79, 0x52, 0x03, 0x65, 0x6e, 0x76, 0x1a, 0x36, 0x0a, 0x08, 0x45, 0x6e, 0x76, 0x45,
+	0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01,
 	0x32, 0x49, 0x0a, 0x0f, 0x50, 0x69, 0x6e, 0x67, 0x50, 0x6f, 0x6e, 0x67, 0x53, 0x65, 0x72, 0x76,
 	0x69, 0x63, 0x65, 0x12, 0x36, 0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x16, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75,
@@ -131,53 +145,55 @@ var file_ping_pong_proto_rawDesc = []byte{
 }
 
 var (
-	file_ping_pong_proto_rawDescOnce sync.Once
-	file_ping_pong_proto_rawDescData = file_ping_pong_proto_rawDesc
+	file_proto_ping_pong_proto_rawDescOnce sync.Once
+	file_proto_ping_pong_proto_rawDescData = file_proto_ping_pong_proto_rawDesc
 )
 
-func file_ping_pong_proto_rawDescGZIP() []byte {
-	file_ping_pong_proto_rawDescOnce.Do(func() {
-		file_ping_pong_proto_rawDescData = protoimpl.X.CompressGZIP(file_ping_pong_proto_rawDescData)
+func file_proto_ping_pong_proto_rawDescGZIP() []byte {
+	file_proto_ping_pong_proto_rawDescOnce.Do(func() {
+		file_proto_ping_pong_proto_rawDescData = protoimpl.X.CompressGZIP(file_proto_ping_pong_proto_rawDescData)
 	})
-	return file_ping_pong_proto_rawDescData
+	return file_proto_ping_pong_proto_rawDescData
 }
 
-var file_ping_pong_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_ping_pong_proto_goTypes = []any{
+var file_proto_ping_pong_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_ping_pong_proto_goTypes = []any{
 	(*PingPongRequest)(nil), // 0: proto.PingPongRequest
 	(*PingPongReply)(nil),   // 1: proto.PingPongReply
+	nil,                     // 2: proto.PingPongReply.EnvEntry
 }
-var file_ping_pong_proto_depIdxs = []int32{
-	0, // 0: proto.PingPongService.Ping:input_type -> proto.PingPongRequest
-	1, // 1: proto.PingPongService.Ping:output_type -> proto.PingPongReply
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+var file_proto_ping_pong_proto_depIdxs = []int32{
+	2, // 0: proto.PingPongReply.env:type_name -> proto.PingPongReply.EnvEntry
+	0, // 1: proto.PingPongService.Ping:input_type -> proto.PingPongRequest
+	1, // 2: proto.PingPongService.Ping:output_type -> proto.PingPongReply
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_ping_pong_proto_init() }
-func file_ping_pong_proto_init() {
-	if File_ping_pong_proto != nil {
+func init() { file_proto_ping_pong_proto_init() }
+func file_proto_ping_pong_proto_init() {
+	if File_proto_ping_pong_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_ping_pong_proto_rawDesc,
+			RawDescriptor: file_proto_ping_pong_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_ping_pong_proto_goTypes,
-		DependencyIndexes: file_ping_pong_proto_depIdxs,
-		MessageInfos:      file_ping_pong_proto_msgTypes,
+		GoTypes:           file_proto_ping_pong_proto_goTypes,
+		DependencyIndexes: file_proto_ping_pong_proto_depIdxs,
+		MessageInfos:      file_proto_ping_pong_proto_msgTypes,
 	}.Build()
-	File_ping_pong_proto = out.File
-	file_ping_pong_proto_rawDesc = nil
-	file_ping_pong_proto_goTypes = nil
-	file_ping_pong_proto_depIdxs = nil
+	File_proto_ping_pong_proto = out.File
+	file_proto_ping_pong_proto_rawDesc = nil
+	file_proto_ping_pong_proto_goTypes = nil
+	file_proto_ping_pong_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.3
-// source: ping-pong.proto
+// source: proto/ping-pong.proto
 
 package proto
 
@@ -117,5 +117,5 @@ var PingPongService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "ping-pong.proto",
+	Metadata: "proto/ping-pong.proto",
 }

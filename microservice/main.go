@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net"
+	"os"
 
 	pb "github.com/JamesPlayer/my-kubernetes-app/microservice/proto"
 	"google.golang.org/grpc"
@@ -14,8 +15,16 @@ type server struct {
 }
 
 func (s *server) Ping(_ context.Context, in *pb.PingPongRequest) (*pb.PingPongReply, error) {
-	log.Printf("Received: %v", in.GetMessage())
-	return &pb.PingPongReply{Message: "Pong"}, nil
+	log.Printf("Received: %v", in.GetMsg())
+	return &pb.PingPongReply{
+		Msg: "Pinged Microservice",
+		Env: map[string]string{
+			"MY_NODE_NAME": os.Getenv("MY_NODE_NAME"),
+			"MY_POD_NAME":  os.Getenv("MY_POD_NAME"),
+			"MY_POD_IP":    os.Getenv("MY_POD_IP"),
+			"MY_SECRET":    os.Getenv("MY_SECRET"),
+		},
+	}, nil
 }
 
 func main() {

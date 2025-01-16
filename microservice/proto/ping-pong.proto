@@ -12,9 +12,10 @@ service PingPongService {
 }
 
 message PingPongRequest {
-  string message = 1;
+  string msg = 1;
 }
 
 message PingPongReply {
-  string message = 1;
+  string msg = 1;
+  map<string, string> env = 2;
 }

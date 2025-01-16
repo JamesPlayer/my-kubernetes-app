@@ -1,16 +1,14 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	pb "github.com/JamesPlayer/my-kubernetes-app/microservice/proto"
+	// pb "github.com/JamesPlayer/my-kubernetes-app/microservice/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -41,17 +39,16 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	microserviceClient := pb.NewPingPongServiceClient(conn)
+	// microserviceClient := pb.NewPingPongServiceClient(conn)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Contact the microservice and print out its response.
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-		defer cancel()
-		microserviceReply, err := microserviceClient.Ping(ctx, &pb.PingPongRequest{Message: "Ping"})
-		if err != nil {
-			log.Fatalf("could not ping: %v", err)
-		}
-		log.Printf("Ping: %s", microserviceReply.GetMessage())
+		// ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		// defer cancel()
+		// microserviceReply, err := microserviceClient.Ping(ctx, &pb.PingPongRequest{Message: "Ping"})
+		// if err != nil {
+		// 	log.Fatalf("could not ping: %v", err)
+		// }
 
 		color, err := getFileContents("/etc/app-config/color")
 		if err != nil {
@@ -65,18 +62,24 @@ func main() {
 			return
 		}
 
-		json, err := json.Marshal(Response{
-			Msg: "Hit API server.",
-			Env: map[string]string{
-				"MY_NODE_NAME": os.Getenv("MY_NODE_NAME"),
-				"MY_POD_NAME":  os.Getenv("MY_POD_NAME"),
-				"MY_POD_IP":    os.Getenv("MY_POD_IP"),
-				"MY_SECRET":    os.Getenv("MY_SECRET"),
+		json, err := json.Marshal([]Response{
+			Response{
+				Msg: "Hit API server",
+				Env: map[string]string{
+					"MY_NODE_NAME": os.Getenv("MY_NODE_NAME"),
+					"MY_POD_NAME":  os.Getenv("MY_POD_NAME"),
+					"MY_POD_IP":    os.Getenv("MY_POD_IP"),
+					"MY_SECRET":    os.Getenv("MY_SECRET"),
+				},
+				Config: map[string]string{
+					"color":   color,
+					"logoUrl": logoUrl,
+				},
 			},
-			Config: map[string]string{
-				"color":   color,
-				"logoUrl": logoUrl,
-			},
+			// Response{
+			// 	Msg: microserviceReply.GetMsg
+			// 	Env: microserviceReply.GetEnv
+			// }
 		})
 
 		if err != nil {
