@@ -1,20 +1,22 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"time"
 
-	// pb "github.com/JamesPlayer/my-kubernetes-app/microservice/proto"
+	pb "github.com/JamesPlayer/my-kubernetes-app/microservice/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var addr = flag.String("addr", "localhost:50051", "address of microservice")
+var addr = flag.String("addr", "my-k8s-app-microservice.default.svc.cluster.local:50051", "address of microservice")
 
 type Response struct {
 	Msg    string            `json:"msg"`
@@ -39,31 +41,24 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	// microserviceClient := pb.NewPingPongServiceClient(conn)
+	microserviceClient := pb.NewPingPongServiceClient(conn)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Contact the microservice and print out its response.
-		// ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-		// defer cancel()
-		// microserviceReply, err := microserviceClient.Ping(ctx, &pb.PingPongRequest{Message: "Ping"})
-		// if err != nil {
-		// 	log.Fatalf("could not ping: %v", err)
-		// }
-
-		color, err := getFileContents("/etc/app-config/color")
+		// Get config from volume
+		color, _ := getFileContents("/etc/app-config/color")
 		if err != nil {
 			fmt.Fprintf(w, "Error getting color config")
 			return
 		}
 
-		logoUrl, err := getFileContents("/etc/app-config/logo_url")
+		logoUrl, _ := getFileContents("/etc/app-config/logo_url")
 		if err != nil {
 			fmt.Fprintf(w, "Error getting logo_url config")
 			return
 		}
 
-		json, err := json.Marshal([]Response{
-			Response{
+		response := []Response{
+			{
 				Msg: "Hit API server",
 				Env: map[string]string{
 					"MY_NODE_NAME": os.Getenv("MY_NODE_NAME"),
@@ -76,11 +71,22 @@ func main() {
 					"logoUrl": logoUrl,
 				},
 			},
-			// Response{
-			// 	Msg: microserviceReply.GetMsg
-			// 	Env: microserviceReply.GetEnv
-			// }
+		}
+
+		// Get info from microservice
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		microserviceReply, err := microserviceClient.Ping(ctx, &pb.PingPongRequest{Msg: "Ping"})
+		if err != nil {
+			log.Fatalf("could not ping: %v", err)
+		}
+
+		response = append(response, Response{
+			Msg: microserviceReply.GetMsg(),
+			Env: microserviceReply.GetEnv(),
 		})
+
+		json, err := json.Marshal(response)
 
 		if err != nil {
 			fmt.Fprintf(w, "Error marshalling response into json")

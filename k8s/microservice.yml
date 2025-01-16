@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-k8s-app-microservice
+  name: my-k8s-app-microservice
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-k8s-app-microservice
+  template:
+    metadata:
+      labels:
+        app: my-k8s-app-microservice
+    spec:
+      containers:
+      - image: jamesplayer/my-k8s-microservice
+        name: my-k8s-microservice
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-k8s-app-microservice
+  name: my-k8s-app-microservice
+spec:
+  ports:
+    - port: 50051
+  selector:
+    app: my-k8s-app-microservice
+  type: ClusterIP
